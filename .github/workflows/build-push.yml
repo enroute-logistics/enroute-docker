@@ -1,7 +1,7 @@
 name: Build and push docker-compose images
 
 env:
-  DOCKERHUB_REPOSITORY: henokujuzi/enroute
+  DOCKERHUB_REPOSITORY: henokujuzi/enroute-core
 
 on:
   push:
