@@ -25,7 +25,7 @@ services:
   traccar:
     build:
       context: .
-      dockerfile: Dockerfile.alpine
+      dockerfile: Dockerfile.ubuntu
     container_name: traccar-container
     depends_on:
       - mysql
