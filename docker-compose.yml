@@ -10,6 +10,8 @@ services:
       MYSQL_DATABASE: traccar
       MYSQL_USER: traccar_user
       MYSQL_PASSWORD: traccar-secret
+    expose:
+      - 3306
     ports:
       - "3306:3306"
     volumes:
