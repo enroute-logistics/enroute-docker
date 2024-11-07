@@ -62,7 +62,7 @@ jobs:
         if: env.DOCKERHUB_IMAGE_TAGS != ''
         uses: docker/build-push-action@v4
         with:
-          file: Dockerfile.${{ matrix.os }}
+          file: docker-compose.yml
           tags: ${{ env.DOCKERHUB_IMAGE_TAGS }}
           platforms: ${{ env.DOCKERHUB_IMAGE_PLATFORMS }}
           push: true
