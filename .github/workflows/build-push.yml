@@ -34,6 +34,26 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set environment DOCKERHUB_IMAGE_TAGS on master
+        run: echo "DOCKERHUB_IMAGE_TAGS=$DOCKERHUB_REPOSITORY:latest" >> $GITHUB_ENV
+
+      - name: Set environment DOCKERHUB_IMAGE_TAGS
+        if: github.ref != 'refs/heads/master'
+        run: |
+          _BRANCH=${GITHUB_REF##*/}
+          _VERSION=${_BRANCH#v*}
+          _MAJOR_VERSION=${_VERSION%.*}
+          _DOCKERHUB_IMAGE_TAGS="$DOCKERHUB_REPOSITORY:$_VERSION-ubuntu"
+          _DOCKERHUB_IMAGE_TAGS+=",$DOCKERHUB_REPOSITORY:$_MAJOR_VERSION-ubuntu"
+          _DOCKERHUB_IMAGE_TAGS+=",$DOCKERHUB_REPOSITORY:ubuntu"
+          _DOCKERHUB_IMAGE_TAGS+=",$DOCKERHUB_REPOSITORY:$_VERSION"
+          _DOCKERHUB_IMAGE_TAGS+=",$DOCKERHUB_REPOSITORY:$_MAJOR_VERSION"
+          echo "DOCKERHUB_IMAGE_TAGS=$_DOCKERHUB_IMAGE_TAGS" >> $GITHUB_ENV
+      - name: Set environment DOCKERHUB_IMAGE_PLATFORMS
+        run: |
+          _DOCKERHUB_IMAGE_PLATFORMS="linux/amd64,linux/arm64"
+          _DOCKERHUB_IMAGE_PLATFORMS+=",linux/arm/v7"
+          echo "DOCKERHUB_IMAGE_PLATFORMS=$_DOCKERHUB_IMAGE_PLATFORMS" >> $GITHUB_ENV
 
       - name: Build and push docker-compose images
         run: |
